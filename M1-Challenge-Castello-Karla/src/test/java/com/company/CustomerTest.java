@@ -14,25 +14,61 @@ public class CustomerTest {
         customer = new Customer();
     }
 
-    //@Test
-    //public void addNegativeAndPositiveBalance(){
+    @Test
+    public void getZeroBalance(){
 
-        //assertEquals(-1000, customer.getBalance());
-    //}
+        assertEquals(0, customer.getBalance());
+    }
 
-    //public void addNegativeAndNegativeBalance();
+    @Test
+    public void getNegativeBalance(){
 
-    //public void addNegativeAndZeroBalance();
+        AccountRecord ar = new AccountRecord();
+        ar.setCharge(-100);
+        customer.getCharges().add(ar);
 
-    //public void addPositiveAndZeroBalance();
+        assertEquals(-100, customer.getBalance());
+    }
 
 
-    //public void printNameIdAndBalance();
+    @Test
+    public void getPositiveBalance(){
 
-    //public void printNameandBalance();
+        AccountRecord ar1 = new AccountRecord();
+        AccountRecord ar2 = new AccountRecord();
 
-    //public void printIdAndName();
+        ar1.setCharge(-10);
+        ar2.setCharge(50);
 
-    //public void printIdAndBalance();
+        customer.getCharges().add(ar1);
+        customer.getCharges().add(ar2);
+
+        assertEquals(40, customer.getBalance());
+    }
+
+    @Test
+    public void printPositiveBalance(){
+        customer.setName("Luis");
+        customer.setId(1);
+
+        AccountRecord ar = new AccountRecord();
+        ar.setCharge(100);
+
+        customer.getCharges().add(ar);
+
+        assertEquals("ID: 1 Name: Luis Balance: 100", customer.toString());
+
+    }
+
+    @Test
+    public void printNegativeBalance(){
+        AccountRecord ar = new AccountRecord();
+        ar.setCharge(-10);
+
+        customer.getCharges().add(ar);
+
+        assertEquals("ID: 0 Name: null Balance: -10", customer.toString());
+
+    }
 
 }
