@@ -4,11 +4,7 @@ use northwind;
 
 -- What are the categories of products in the database?
 
-<<<<<<< HEAD
 SELECT DISTINCT category
-=======
-SELECT category
->>>>>>> ecdd529cdb3ece8914b487188aa5c77c36f9e043
 FROM products;
 
 -- What products are made by Dell?
