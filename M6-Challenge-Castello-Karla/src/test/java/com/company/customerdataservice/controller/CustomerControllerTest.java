@@ -29,20 +29,13 @@ public class CustomerControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    ObjectMapper objectMapper;
+    ObjectMapper objectMapper = new ObjectMapper();
 
     private Customer customer;
 
-    @Test
-    public void shouldReturnAllCustomers() throws Exception{
-
-        mockMvc.perform(get("/customers"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void shouldAddCustomer() throws Exception{
+    @BeforeEach
+    public void setUp(){
+        customerRepository.deleteAll();
         customer = new Customer();
         customer.setFirstName("Bob");
         customer.setLastName("Ross");
@@ -55,10 +48,24 @@ public class CustomerControllerTest {
         customer.setState("Texas");
         customer.setCountry("United States");
         customer.setCompany("New Paints");
+        customerRepository.save(customer);
+    }
 
+    @Test
+    public void shouldReturnAllCustomers() throws Exception{
+
+        mockMvc.perform(get("/customers"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldAddCustomer() throws Exception{
         String inputJson = objectMapper.writeValueAsString(customer);
 
-        mockMvc.perform(post("/customers").content(inputJson).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post("/customers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(inputJson))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
@@ -89,7 +96,9 @@ public class CustomerControllerTest {
 
     @Test
     public void shouldUpdateCustomer() throws Exception{
+
         customer.setFirstName("Robert");
+        customerRepository.save(customer);
 
         String inputJson = objectMapper.writeValueAsString(customer);
 
